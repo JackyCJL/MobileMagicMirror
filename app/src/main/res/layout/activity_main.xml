@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <FrameLayout
+        android:id="@+id/camera_preview"
+        android:layout_width="0px"
+        android:layout_height="fill_parent"
+        android:layout_weight="1">
+    </FrameLayout>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:orientation="vertical">
+            <Button
+                android:id="@+id/button_capture_photo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="拍照"/>
+        </LinearLayout>
+    </RelativeLayout>
+</LinearLayout>
+
+    <!-- FrameLayout 布局框架
+    默认所有内容堆叠在左上方
+    但可以设置相关属性对内容进行调整 -->
