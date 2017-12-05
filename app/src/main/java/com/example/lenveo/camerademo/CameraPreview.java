@@ -1,6 +1,7 @@
 package com.example.lenveo.camerademo;
 
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.Rect;
 import android.graphics.RectF;
@@ -33,12 +34,18 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
     private static final String TAG = "CameraPreview";
     private SurfaceHolder mHolder;
     private Camera mCamera;
+    private Context mContext;
     private float oldDist = 1f; //初始缩放比例
+    private final int FRONT = 0;    //使用的是前置镜头还是后置镜头
+    private final int BACK = 1;
+    private int cameraPosition = BACK;
+
 
     public CameraPreview(Context context){
         super(context);
         mHolder = getHolder();
         mHolder.addCallback(this);
+        mContext = context;
     }
 
     public static Camera getCameraInstance(){
@@ -51,6 +58,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         return c;
     }
 
+    /*
     private int getPictureSize(List<Camera.Size> sizes) {
         // 屏幕的宽度
         Resources resources = this.getResources();
@@ -69,7 +77,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
             }
         return index;
     }
-
+    */
 
     public void surfaceCreated(SurfaceHolder holder){
         mCamera = getCameraInstance();
@@ -129,14 +137,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         return mediaFile;
     }
 
-    public Uri getOutputMediaFileUri(){
-        return outputMediaFileUri;
-    }
-
-    public String getOutputMediaFileType(){
-        return outputMediaFileType;
-    }
-
+    //  拍照
     public void takePicture(){
         mCamera.takePicture(null, null, new Camera.PictureCallback(){
             @Override
@@ -160,6 +161,43 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
                 }
             }
         });
+    }
+
+    //  打开镜头
+    public Camera openCamera(int position){
+        int frontIndex =-1;
+        int backIndex = -1;
+        int cameraCount = Camera.getNumberOfCameras();
+        Camera.CameraInfo info = new Camera.CameraInfo();
+        for(int cameraIndex = 0; cameraIndex<cameraCount; cameraIndex++){
+            Camera.getCameraInfo(cameraIndex, info);
+            if(info.facing == Camera.CameraInfo.CAMERA_FACING_FRONT){
+                frontIndex = cameraIndex;
+            }else if(info.facing == Camera.CameraInfo.CAMERA_FACING_BACK){
+                backIndex = cameraIndex;
+            }
+        }
+        cameraPosition = position;
+        if(cameraPosition == FRONT && frontIndex != -1){
+            return Camera.open(frontIndex);
+        }else if(cameraPosition == BACK && backIndex != -1){
+            return Camera.open(backIndex);
+        }
+        return null;
+
+    }
+
+    //  切换前后镜头
+    public void changeCamera() throws IOException{
+        mCamera.stopPreview();
+        mCamera.release();
+        if(cameraPosition == FRONT){
+            mCamera = openCamera(BACK);
+        }else if(cameraPosition == BACK){
+            mCamera = openCamera(FRONT);
+        }
+        mCamera.setPreviewDisplay(getHolder());
+        mCamera.startPreview();
     }
 
     //  对焦相关
