@@ -19,7 +19,7 @@
             android:layout_height="fill_parent"
             android:layout_alignParentBottom="true"
             android:layout_alignParentTop="true"
-            android:layout_toStartOf="@+id/relativeLayout">
+            android:layout_toStartOf="@+id/buttonLayout">
             //android:layout_weight="1">
 
         </FrameLayout>
@@ -58,58 +58,6 @@
         </RelativeLayout>
 
 
-        <RelativeLayout
-            android:layout_width="30dp"
-            android:layout_height="match_parent"
-            android:layout_alignParentTop="true"
-            android:layout_toStartOf="@+id/buttonLayout"
-            android:background="@color/black"
-            android:id="@+id/relativeLayout">
-
-
-            <Button
-                android:id="@+id/button1"
-                android:layout_width="30dp"
-                android:layout_height="50dp"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentTop="true"
-                android:layout_marginTop="78dp"
-                android:text="模式一"
-                android:textColor="@color/black"
-                android:textSize="7sp"
-                tools:text="模式一" />
-
-            <Button
-                android:id="@+id/button2"
-                android:layout_width="30dp"
-                android:layout_height="50dp"
-                android:layout_alignParentStart="true"
-                android:layout_below="@+id/button3"
-                android:text="模式二"
-                android:textSize="7sp"
-                tools:text="模式二" />
-
-            <Button
-                android:id="@+id/button3"
-                android:layout_width="30dp"
-                android:layout_height="50dp"
-                android:layout_alignParentStart="true"
-                android:layout_below="@+id/button1"
-                android:text="模式三"
-                android:textSize="7sp"
-                tools:text="模式三" />
-
-            <Button
-                android:id="@+id/button4"
-                android:layout_width="30dp"
-                android:layout_height="50dp"
-                android:layout_alignParentStart="true"
-                android:layout_below="@+id/button2"
-                android:text="模式四"
-                android:textSize="7sp"
-                tools:text="模式四" />
-
-        </RelativeLayout>
 
 
         <RelativeLayout
@@ -162,15 +110,59 @@
                     android:scaleType="fitEnd"
                     android:src="@drawable/camera_library2" />
 
+
                 <Button
                     android:id="@+id/takepicture"
                     android:layout_width="60dp"
                     android:layout_height="60dp"
 
                     android:layout_alignParentStart="true"
-                    android:layout_below="@+id/change"
-                    android:layout_marginTop="111dp"
+                    android:layout_below="@+id/button2"
                     android:background="@drawable/btn_take_photo" />
+
+                <Button
+                    android:id="@+id/button1"
+                    android:layout_width="30dp"
+                    android:layout_height="50dp"
+                    android:layout_below="@+id/change"
+                    android:layout_centerHorizontal="true"
+                    android:text="模式一"
+                    android:textColor="@color/black"
+                    android:textSize="7sp"
+                    tools:text="模式一" />
+
+                <Button
+                    android:id="@+id/button2"
+                    android:layout_width="30dp"
+                    android:layout_height="50dp"
+                    android:layout_alignStart="@+id/button1"
+                    android:layout_below="@+id/button1"
+                    android:text="模式二"
+                    android:textSize="7sp"
+                    tools:text="模式二" />
+
+
+                <Button
+                    android:id="@+id/button3"
+                    android:layout_width="30dp"
+                    android:layout_height="50dp"
+                    android:layout_above="@+id/button4"
+                    android:layout_alignStart="@+id/button4"
+                    android:text="模式三"
+                    android:textSize="7sp"
+                    tools:text="模式三" />
+
+                <Button
+                    android:id="@+id/button4"
+                    android:layout_width="30dp"
+                    android:layout_height="50dp"
+                    android:layout_above="@+id/picture"
+                    android:layout_alignStart="@+id/button2"
+                    android:text="模式四"
+                    android:textSize="7sp"
+                    tools:text="模式四" />
+
+
 
 
             </RelativeLayout>
