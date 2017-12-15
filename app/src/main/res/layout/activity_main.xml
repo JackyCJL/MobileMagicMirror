@@ -1,30 +1,185 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <FrameLayout
-        android:id="@+id/camera_preview"
-        android:layout_width="0px"
-        android:layout_height="fill_parent"
-        android:layout_weight="1">
-    </FrameLayout>
+
 
     <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="fill_parent"
-        android:orientation="vertical">
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:orientation="vertical">
+        android:id="@+id/buttonlayoutall"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+
+
+        <FrameLayout
+            android:id="@+id/camera_preview"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentTop="true"
+            android:layout_toStartOf="@+id/relativeLayout">
+            //android:layout_weight="1">
+
+        </FrameLayout>
+        <RelativeLayout
+            android:id="@+id/top_1"
+            android:layout_width="60dp"
+            android:layout_height="fill_parent"
+            android:layout_alignParentBottom="true"
+            android:background="#00000000"
+            android:visibility="visible">
+            >
+
+
+            <ImageView
+                android:id="@+id/d_s"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentLeft="true"
+                android:paddingBottom="10dp"
+                android:paddingRight="10dp"
+                android:paddingTop="10dp"
+                android:scaleType="fitEnd"
+                android:src="@drawable/camera_d_s" />
+
+            <ImageView
+                android:id="@+id/plane"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_alignParentLeft="true"
+                android:paddingBottom="10dp"
+                android:paddingLeft="10dp"
+                android:paddingTop="10dp"
+                android:scaleType="centerInside"
+                android:src="@drawable/camera_plane" />
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:layout_width="30dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentTop="true"
+            android:layout_toStartOf="@+id/buttonLayout"
+            android:background="@color/black"
+            android:id="@+id/relativeLayout">
+
+
             <Button
-                android:id="@+id/button_capture_photo"
+                android:id="@+id/button1"
+                android:layout_width="30dp"
+                android:layout_height="50dp"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginTop="78dp"
+                android:text="模式一"
+                android:textColor="@color/black"
+                android:textSize="7sp"
+                tools:text="模式一" />
+
+            <Button
+                android:id="@+id/button2"
+                android:layout_width="30dp"
+                android:layout_height="50dp"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/button3"
+                android:text="模式二"
+                android:textSize="7sp"
+                tools:text="模式二" />
+
+            <Button
+                android:id="@+id/button3"
+                android:layout_width="30dp"
+                android:layout_height="50dp"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/button1"
+                android:text="模式三"
+                android:textSize="7sp"
+                tools:text="模式三" />
+
+            <Button
+                android:id="@+id/button4"
+                android:layout_width="30dp"
+                android:layout_height="50dp"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/button2"
+                android:text="模式四"
+                android:textSize="7sp"
+                tools:text="模式四" />
+
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:id="@+id/buttonLayout"
+            android:layout_width="60dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentTop="true"
+            android:gravity="right">
+            //android:layout_marginStart="0dp"
+            >
+
+            <LinearLayout
+                android:id="@+id/linearLayout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="拍照"/>
-        </LinearLayout>
+                android:layout_centerVertical="true"
+                android:orientation="vertical">
+
+            </LinearLayout>
+
+            <RelativeLayout
+                android:id="@+id/panel_take_photo"
+                android:layout_width="60dp"
+                android:layout_height="fill_parent"
+                android:layout_alignParentBottom="true"
+                android:background="@color/black"
+                android:orientation="vertical">
+
+
+                <ImageView
+                    android:id="@+id/change"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignStart="@+id/picture"
+                    android:paddingBottom="10dp"
+                    android:paddingRight="10dp"
+                    android:paddingTop="10dp"
+                    android:scaleType="fitEnd"
+                    android:src="@drawable/camera_flip" />
+
+                <ImageView
+                    android:id="@+id/picture"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
+                    android:padding="5dp"
+                    android:scaleType="fitEnd"
+                    android:src="@drawable/camera_library2" />
+
+                <Button
+                    android:id="@+id/takepicture"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+
+                    android:layout_alignParentStart="true"
+                    android:layout_below="@+id/change"
+                    android:layout_marginTop="111dp"
+                    android:background="@drawable/btn_take_photo" />
+
+
+            </RelativeLayout>
+        </RelativeLayout>
+
+
+
     </RelativeLayout>
+
 </LinearLayout>
 
     <!-- FrameLayout 布局框架

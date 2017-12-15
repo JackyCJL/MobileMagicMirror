@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 
 /**
  * Created by Lenveo on 2017/12/3.
@@ -41,7 +42,7 @@ public class MainActivity extends Activity{
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
         }
         */
-        final Button buttonCapturePhoto = (Button) findViewById(R.id.button_capture_photo);
+        final Button buttonCapturePhoto = (Button) findViewById(R.id.takepicture);
         buttonCapturePhoto.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
