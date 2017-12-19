@@ -8,4 +8,13 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <!-- Activity Album-->
+    <style name="dividing_line_style">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">@dimen/dividing_0.5</item>
+        <item name="android:background">@color/gray_dividing</item>
+    </style>
+    <!-- Activity Alubm-->
+
+
 </resources>

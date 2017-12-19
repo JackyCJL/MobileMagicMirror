@@ -2,6 +2,7 @@ package com.example.lenveo.camerademo;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
@@ -68,8 +69,8 @@ public class MainActivity extends Activity{
         buttonPicture.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                //Log.i("MainActivity", "Click the Picture");
-
+                Intent intent = new Intent(MainActivity.this, AlbumActivity.class);
+                startActivity(intent);
             }
         });
     }
