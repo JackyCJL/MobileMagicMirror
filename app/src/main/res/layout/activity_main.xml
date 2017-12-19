@@ -97,14 +97,15 @@
                     android:scaleType="fitEnd"
                     android:background="@drawable/camera_flip" />
 
-                <ImageView
+                <Button
                     android:id="@+id/picture"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:layout_alignParentBottom="true"
                     android:layout_centerHorizontal="true"
                     android:scaleType="fitEnd"
-                    android:src="@drawable/camera_library2" />
+                    android:padding="0dp"
+                    android:background="@drawable/camera_library2" />
 
 
                 <Button

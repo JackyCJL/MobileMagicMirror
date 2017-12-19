@@ -63,6 +63,15 @@ public class MainActivity extends Activity{
 
             }
         });
+
+        final Button buttonPicture = (Button) findViewById(R.id.picture);
+        buttonPicture.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                //Log.i("MainActivity", "Click the Picture");
+
+            }
+        });
     }
 
     private void initCamera(){
