@@ -73,6 +73,8 @@ public class MainActivity extends Activity{
                 startActivity(intent);
             }
         });
+
+
     }
 
     private void initCamera(){

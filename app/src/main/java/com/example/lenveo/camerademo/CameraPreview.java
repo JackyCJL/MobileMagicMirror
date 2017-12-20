@@ -228,7 +228,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         int viewWidth = getWidth();
         int viewHeight = getHeight();
         Rect focusRect = calculateTapArea(event.getX(), event.getY(), 1f, viewWidth, viewHeight);
-
+        //Log.i(TAG, "handleFocus: now call handleFocus");
         camera.cancelAutoFocus();
         Camera.Parameters params = camera.getParameters();
         if (params.getMaxNumFocusAreas() > 0) {

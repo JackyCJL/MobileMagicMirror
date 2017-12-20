@@ -41,7 +41,14 @@
     <!-- Activity Album -->
     <color name="title_bg">#ffffffff</color>
     <color name="title_text_color">#ff363636</color>
+    <color name="common_title_bg">#aa111213</color>
+    <color name="primary_title_text_color">#ffeeeeee</color>
+    <color name="album_item_bg">#fffcfcfd</color>
+    <color name="gray_3">#333333</color>
 
     <color name="gray_dividing">#ffcccccc</color>
+
+    <color name="mine_bg">#ffffff</color>
+    <color name="mine_bg_selected">#d9d9d9</color>
     <!-- Activity Album -->
 </resources>
