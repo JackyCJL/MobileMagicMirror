@@ -128,7 +128,8 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         File mediaFile;
         if (type == MEDIA_TYPE_IMAGE){
-            mediaFile = new File(mediaStorageDir.getPath() + File.separator + "IMG_" + timeStamp + ".jpg");
+           mediaFile = new File(mediaStorageDir.getPath() + File.separator + timeStamp + ".jpg");
+            //mediaFile = new File(mediaStorageDir.getPath() + File.separator + "IMG_" + timeStamp + ".jpg");
             outputMediaFileType = "image/*";
         }else {
             return null;
@@ -148,11 +149,12 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
                     Log.d(TAG,"Error creating media file, check storage permissions");
                     return;
                 }
+                Log.i(TAG, pictureFile.getAbsolutePath());
                 try{
                     FileOutputStream fos = new FileOutputStream(pictureFile);
                     fos.write(data);
                     fos.close();
-
+                    Log.i(TAG, "save picture done");
                     camera.startPreview();
                 } catch (FileNotFoundException e){
                     Log.d(TAG, "File not found: " + e.getMessage());
@@ -311,5 +313,9 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         } else {
             Log.i(TAG, "zoom not supported");
         }
+    }
+
+    public Camera getCamera(){
+        return mCamera;
     }
 }

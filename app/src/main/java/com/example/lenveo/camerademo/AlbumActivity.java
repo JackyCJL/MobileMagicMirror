@@ -48,6 +48,7 @@ public class AlbumActivity extends BaseActivity {
     LocalImageHelper helper;
    // View camera;
    List<String> folderNames;
+   static int PICTRUE_MAX_NUMBER = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,8 +108,8 @@ public class AlbumActivity extends BaseActivity {
     View.OnClickListener onClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            if(LocalImageHelper.getInstance().getCurrentSize()+LocalImageHelper.getInstance().getCheckedItems().size()>=9){
-                Toast.makeText(AlbumActivity.this,"最多选择9张图片",Toast.LENGTH_SHORT).show();
+            if(LocalImageHelper.getInstance().getCurrentSize()+LocalImageHelper.getInstance().getCheckedItems().size()>=PICTRUE_MAX_NUMBER){
+                Toast.makeText(AlbumActivity.this,"最多选择"+PICTRUE_MAX_NUMBER+"张图片",Toast.LENGTH_SHORT).show();
                 return;
             }
             Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);

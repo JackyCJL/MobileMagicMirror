@@ -1,10 +1,15 @@
 package com.example.lenveo.camerademo;
 
+import android.content.ContentResolver;
 import android.content.Context;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.StrictMode;
+import android.provider.MediaStore;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -32,6 +37,11 @@ import com.nostra13.universalimageloader.core.display.SimpleBitmapDisplayer;
 import com.nostra13.universalimageloader.core.imageaware.ImageViewAware;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 
+import java.io.DataOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.net.Socket;
 import java.util.List;
 
 /**
@@ -57,6 +67,13 @@ public class AlbumActivityDetail extends BaseActivity implements MatrixImageView
     CheckBox checkBox;
     LocalImageHelper helper = LocalImageHelper.getInstance();
     List<LocalImageHelper.LocalFile> checkedItems ;
+
+    static int PICTURE_MAX_NUMBER = 1;
+    //static String SERVER_ID = "192.168.14.88";
+    static String SERVER_ID = "10.137.194.6";
+    static int SERVER_PORT = 9210;
+    static int MESSAGE_CHAR_NUMBER = 2000;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -84,6 +101,16 @@ public class AlbumActivityDetail extends BaseActivity implements MatrixImageView
         headerFinish.setOnClickListener(this);
         findViewById(R.id.album_back).setOnClickListener(this);
 
+       // if (ContextCompat.checkSelfPermission(this, Manifest.permission.INTERNET) != PackageManager.PERMISSION_GRANTED) {
+      //      ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 10/*requestCode*/);
+
+      //  }
+        StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
+
+                .detectDiskReads().detectDiskWrites().detectNetwork()
+
+                .penaltyLog().build());
+
         folder = getIntent().getExtras().getString(ExtraKey.LOCAL_FOLDER_NAME);
         new Thread(new Runnable() {
             @Override
@@ -102,9 +129,9 @@ public class AlbumActivityDetail extends BaseActivity implements MatrixImageView
                             gridView.setAdapter(adapter);
                             //设置当前选中数量
                             if (checkedItems.size()+LocalImageHelper.getInstance().getCurrentSize() > 0) {
-                                finish.setText("完成(" + (checkedItems.size()+LocalImageHelper.getInstance().getCurrentSize()) + "/9)");
+                                finish.setText("完成(" + (checkedItems.size()+LocalImageHelper.getInstance().getCurrentSize()) + "/"+ PICTURE_MAX_NUMBER + ")");
                                 finish.setEnabled(true);
-                                headerFinish.setText("完成(" + (checkedItems.size()+LocalImageHelper.getInstance().getCurrentSize()) + "/9)");
+                                headerFinish.setText("完成(" + (checkedItems.size()+LocalImageHelper.getInstance().getCurrentSize()) + "/"+ PICTURE_MAX_NUMBER +")");
                                 headerFinish.setEnabled(true);
                             } else {
                                 finish.setText("完成");
@@ -119,6 +146,8 @@ public class AlbumActivityDetail extends BaseActivity implements MatrixImageView
         }).start();
         checkedItems=helper.getCheckedItems();
         LocalImageHelper.getInstance().setResultOk(false);
+
+
     }
 
 
@@ -202,6 +231,65 @@ public class AlbumActivityDetail extends BaseActivity implements MatrixImageView
         }
     }
 
+    public static String getRealFilePath( final Context context, final Uri uri ) {
+        if ( null == uri ) return null;
+        final String scheme = uri.getScheme();
+        String data = null;
+        if ( scheme == null )
+            data = uri.getPath();
+        else if ( ContentResolver.SCHEME_FILE.equals( scheme ) ) {
+            data = uri.getPath();
+        } else if ( ContentResolver.SCHEME_CONTENT.equals( scheme ) ) {
+            Cursor cursor = context.getContentResolver().query( uri, new String[] { MediaStore.Images.ImageColumns.DATA }, null, null, null );
+            if ( null != cursor ) {
+                if ( cursor.moveToFirst() ) {
+                    int index = cursor.getColumnIndex( MediaStore.Images.ImageColumns.DATA );
+                    if ( index > -1 ) {
+                        data = cursor.getString( index );
+                    }
+                }
+                cursor.close();
+            }
+        }
+        return data;
+    }
+
+    public void handlePictrue() throws IOException {
+        Socket s = new Socket(SERVER_ID, SERVER_PORT);
+        DataOutputStream dos = new DataOutputStream(s.getOutputStream());
+        byte[] msg = new byte[8 + 1 * MESSAGE_CHAR_NUMBER];
+        FileInputStream fis = null;
+        //System.out.println(checkedItems.get(0).getOriginalUri()+".jpg");
+        Uri uri = Uri.parse(checkedItems.get(0).getOriginalUri());
+        //System.out.println(getRealFilePath(this, uri));
+        File file = new File(getRealFilePath(this, uri));
+        fis = new FileInputStream(file);
+        //System.out.print(checkedItems.get(0).getOriginalUri()+"\n");
+        int length = 0;
+        int fin;
+        int now;
+        while ((length = fis.read(msg, 4, 1024)) > 0){
+            now = length;
+            if (length >= 1024){
+                fin = 0;
+            }else {
+                fin = 1;
+            }
+            for (int Ind = 0; Ind < 4; Ind++){
+                msg[Ind] = (byte)(now % 256);
+                now = now / 256;
+            }
+            msg[4 + 1 * MESSAGE_CHAR_NUMBER] = (byte)fin;
+            dos.write(msg, 0, 8 + 1 * MESSAGE_CHAR_NUMBER);
+            dos.flush();
+            System.out.println(length);
+        }
+        dos.close();
+        fis.close();
+        s.close();
+        System.out.println("over");
+    }
+
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
@@ -210,10 +298,18 @@ public class AlbumActivityDetail extends BaseActivity implements MatrixImageView
                 break;
             case R.id.album_finish:
             case R.id.header_finish:
-                AppManager.getAppManager().finishActivity(AlbumActivity.class);
-                LocalImageHelper.getInstance().setResultOk(true);
-                finish();
-                break;
+                //AppManager.getAppManager().finishActivity(AlbumActivity.class);
+                //LocalImageHelper.getInstance().setResultOk(true);
+                //finish();
+                if (checkedItems.size() != 0){
+                    try {
+                        //System.out.print(checkedItems.get(0).getOriginalUri()+"\n");
+                        handlePictrue();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+                //break;
             case R.id.album_back:
                 finish();
                 break;
@@ -237,8 +333,8 @@ public class AlbumActivityDetail extends BaseActivity implements MatrixImageView
             }
         } else {
             if (!checkedItems.contains(compoundButton.getTag())) {
-                if(checkedItems.size()+LocalImageHelper.getInstance().getCurrentSize()>=9){
-                    Toast.makeText(this,"最多选择9张图片",Toast.LENGTH_SHORT).show();
+                if(checkedItems.size()+LocalImageHelper.getInstance().getCurrentSize()>=PICTURE_MAX_NUMBER){
+                    Toast.makeText(this,"最多选择"+PICTURE_MAX_NUMBER+"张图片",Toast.LENGTH_SHORT).show();
                     compoundButton.setChecked(false);
                     return;
                 }
@@ -246,9 +342,11 @@ public class AlbumActivityDetail extends BaseActivity implements MatrixImageView
             }
         }
         if (checkedItems.size()+ LocalImageHelper.getInstance().getCurrentSize()> 0) {
-            finish.setText("完成(" + (checkedItems.size()+LocalImageHelper.getInstance().getCurrentSize()) + "/9)");
+            //finish.setText("完成(" + (checkedItems.size()+LocalImageHelper.getInstance().getCurrentSize()) + "/"+PICTURE_MAX_NUMBER+")");
+            finish.setText("完成");
             finish.setEnabled(true);
-            headerFinish.setText("完成(" +(checkedItems.size()+LocalImageHelper.getInstance().getCurrentSize()) + "/9)");
+            //headerFinish.setText("完成(" +(checkedItems.size()+LocalImageHelper.getInstance().getCurrentSize()) + "/"+PICTURE_MAX_NUMBER+")");
+            headerFinish.setText("完成");
             headerFinish.setEnabled(true);
         } else {
             finish.setText("完成");

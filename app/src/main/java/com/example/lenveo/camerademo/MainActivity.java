@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.hardware.Camera;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -22,6 +23,7 @@ import java.io.IOException;
 
 public class MainActivity extends Activity{
     private  CameraPreview mPreview;
+    private  Camera mCamera;
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
 
@@ -50,6 +52,7 @@ public class MainActivity extends Activity{
             @Override
             public void onClick(View v){
                 mPreview.takePicture();
+               Log.i("MainActivity", "take pictake");
             }
         });
         final Button buttonChangeCamera = (Button) findViewById(R.id.change);
@@ -81,8 +84,33 @@ public class MainActivity extends Activity{
 
         mPreview = new CameraPreview(this );
         FrameLayout preview = (FrameLayout) findViewById(R.id.camera_preview);
+        mCamera = mPreview.getCamera();
         preview.addView(mPreview);
 
     }
+/*
+    @Override
+    protected void onPause() {
+        // TODO Auto-generated method stub
+        super.onPause();
+
+        mCamera.release();
+        mCamera = null;
+    }
+*/
+    @Override
+    protected void onResume() {
+        // TODO Auto-generated method stub
+        super.onResume();
+        if (mCamera == null){
+            mCamera = CameraPreview.getCameraInstance();
+        }
+        //必须放在onResume中，不然会出现Home键之后，再回到该APP，黑屏
+        mPreview = new CameraPreview(this );
+        FrameLayout preview = (FrameLayout) findViewById(R.id.camera_preview);
+        mCamera = mPreview.getCamera();
+        preview.addView(mPreview);
+    }
+
 
 }
