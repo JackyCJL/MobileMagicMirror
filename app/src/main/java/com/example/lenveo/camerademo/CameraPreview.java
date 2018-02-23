@@ -1,5 +1,6 @@
 package com.example.lenveo.camerademo;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
@@ -7,6 +8,8 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.hardware.Camera;
 import android.os.Environment;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -49,8 +52,12 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
     }
 
     public static Camera getCameraInstance(){
+
         Camera c = null;
         try{
+            //int cameracount=Camera.getNumberOfCameras();
+            //c=Camera.open(cameracount-1);
+
             c = Camera.open();
         } catch (Exception e){
             Log.d(TAG, "Camera is not available");

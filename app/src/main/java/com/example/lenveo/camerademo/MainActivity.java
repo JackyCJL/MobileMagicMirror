@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.hardware.Camera;
+import android.hardware.camera2.CameraManager;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -39,8 +40,9 @@ public class MainActivity extends Activity{
         }
 
         setContentView(R.layout.activity_main);
-
+        //Log.d("MainActivity","Error before Init Camera");
         initCamera();
+        //Log.d("MainActivity","Error after Init Camera");
         /*
         int hasWriteContactsPermission = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
         if (hasWriteContactsPermission != PackageManager.PERMISSION_GRANTED){
@@ -81,8 +83,9 @@ public class MainActivity extends Activity{
     }
 
     private void initCamera(){
-
+        //Log.d("initCamera","before new CameraPreview");
         mPreview = new CameraPreview(this );
+        //Log.d("initCamera","after new CameraPreview");
         FrameLayout preview = (FrameLayout) findViewById(R.id.camera_preview);
         mCamera = mPreview.getCamera();
         preview.addView(mPreview);

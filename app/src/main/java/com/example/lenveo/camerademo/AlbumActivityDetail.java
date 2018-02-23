@@ -1,7 +1,9 @@
 package com.example.lenveo.camerademo;
 
+import android.app.AlertDialog;
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -70,9 +72,12 @@ public class AlbumActivityDetail extends BaseActivity implements MatrixImageView
 
     static int PICTURE_MAX_NUMBER = 1;
     //static String SERVER_ID = "192.168.14.88";
-    static String SERVER_ID = "10.137.194.6";
+    static String SERVER_ID = "192.168.1.2";
     static int SERVER_PORT = 9210;
     static int MESSAGE_CHAR_NUMBER = 2000;
+
+    int StyleChoice;
+    int ModelChoice;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -302,12 +307,17 @@ public class AlbumActivityDetail extends BaseActivity implements MatrixImageView
                 //LocalImageHelper.getInstance().setResultOk(true);
                 //finish();
                 if (checkedItems.size() != 0){
+                    showStyleChoiceDialog();
+                    break;
+                    /*
                     try {
                         //System.out.print(checkedItems.get(0).getOriginalUri()+"\n");
+
                         handlePictrue();
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
+                    */
                 }
                 //break;
             case R.id.album_back:
@@ -442,4 +452,75 @@ public class AlbumActivityDetail extends BaseActivity implements MatrixImageView
             }
         }
     };
+
+
+    private void showStyleChoiceDialog(){
+        final String[] items = {"服务器", "本地" };
+        StyleChoice = 0;
+        AlertDialog.Builder singleChoiceDialog =
+                new AlertDialog.Builder(AlbumActivityDetail.this);
+        singleChoiceDialog.setTitle("请选择处理模式");
+        // 第二个参数是默认选项，此处设置为0
+        singleChoiceDialog.setSingleChoiceItems(items, 0,
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        StyleChoice = which;
+                    }
+                });
+        singleChoiceDialog.setPositiveButton("下一步",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        if (StyleChoice != -1) {
+                            Toast.makeText(AlbumActivityDetail.this,
+                                    "你选择了" + items[StyleChoice] + "处理模式",
+                                    Toast.LENGTH_SHORT).show();
+                            showTypeChoiceDialog();
+                        }
+
+                    }
+
+                });
+        singleChoiceDialog.show();
+    }
+
+
+    private void showTypeChoiceDialog(){
+        final String[] items = {"夜间增强", "去雾" , "去运动模糊", "强光抑制", "局部对比度增强"};
+        ModelChoice = 0;
+        AlertDialog.Builder singleChoiceDialog =
+                new AlertDialog.Builder(AlbumActivityDetail.this);
+        singleChoiceDialog.setTitle("请选择处理类型");
+        // 第二个参数是默认选项，此处设置为0
+        singleChoiceDialog.setSingleChoiceItems(items, 0,
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                         ModelChoice = which;
+                    }
+                });
+        singleChoiceDialog.setPositiveButton("开始处理",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        if (ModelChoice != -1) {
+                            /*
+                            Toast.makeText(AlbumActivityDetail.this,
+                                    "你选择了" + items[StyleChoice] ,
+                                    Toast.LENGTH_SHORT).show();
+                             */
+                            //use StyleChoice and ModelChoice to do something
+                            try {
+                                //System.out.print(checkedItems.get(0).getOriginalUri()+"\n");
+
+                                handlePictrue();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+                });
+        singleChoiceDialog.show();
+    }
 }

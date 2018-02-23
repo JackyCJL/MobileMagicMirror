@@ -6,6 +6,9 @@
     <uses-permission android:name="android.permission.CAMERA" />
 
     <uses-feature android:name="android.hardware.camera" />
+
+    <uses-feature android:name = "android.hardware.camera.autofocus" />
+
     <!-- 储存权限申请 -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
