@@ -31,30 +31,31 @@
             android:background="#00000000"
             android:visibility="visible">
             >
+            <!--
 
+                        <ImageView
+                            android:id="@+id/d_s"
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:layout_alignParentBottom="true"
+                            android:layout_alignParentLeft="true"
+                            android:paddingBottom="10dp"
+                            android:paddingRight="10dp"
+                            android:paddingTop="10dp"
+                            android:scaleType="fitEnd"
+                            android:src="@drawable/camera_d_s" />
 
-            <ImageView
-                android:id="@+id/d_s"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentLeft="true"
-                android:paddingBottom="10dp"
-                android:paddingRight="10dp"
-                android:paddingTop="10dp"
-                android:scaleType="fitEnd"
-                android:src="@drawable/camera_d_s" />
-
-            <ImageView
-                android:id="@+id/plane"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:layout_alignParentLeft="true"
-                android:paddingBottom="10dp"
-                android:paddingLeft="10dp"
-                android:paddingTop="10dp"
-                android:scaleType="centerInside"
-                android:src="@drawable/camera_plane" />
+                        <ImageView
+                            android:id="@+id/plane"
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:layout_alignParentLeft="true"
+                            android:paddingBottom="10dp"
+                            android:paddingLeft="10dp"
+                            android:paddingTop="10dp"
+                            android:scaleType="centerInside"
+                            android:src="@drawable/camera_plane" />
+                            -->
         </RelativeLayout>
 
 
@@ -123,10 +124,10 @@
                     android:layout_height="50dp"
                     android:layout_below="@+id/change"
                     android:layout_centerHorizontal="true"
-                    android:text="模式一"
+                    android:text="普 通"
                     android:textColor="@color/black"
-                    android:textSize="7sp"
-                    tools:text="模式一" />
+                    android:textSize="8sp"
+                    tools:text="普 通" />
 
                 <Button
                     android:id="@+id/button2"
@@ -134,9 +135,9 @@
                     android:layout_height="50dp"
                     android:layout_alignStart="@+id/button1"
                     android:layout_below="@+id/button1"
-                    android:text="模式二"
-                    android:textSize="7sp"
-                    tools:text="模式二" />
+                    android:text="夜 间"
+                    android:textSize="8sp"
+                    tools:text="夜 间" />
 
 
                 <Button
@@ -145,9 +146,10 @@
                     android:layout_height="50dp"
                     android:layout_above="@+id/button4"
                     android:layout_alignStart="@+id/button4"
-                    android:text="模式三"
-                    android:textSize="7sp"
-                    tools:text="模式三" />
+                    android:gravity="left"
+                    android:text="雾 霾"
+                    android:textSize="10sp"
+                    tools:text="雾 霾" />
 
                 <Button
                     android:id="@+id/button4"
@@ -156,10 +158,9 @@
                     android:layout_above="@+id/picture"
                     android:layout_alignStart="@+id/button2"
                     android:layout_marginBottom="-3dp"
-
-                    android:text="模式四"
-                    android:textSize="7sp"
-                    tools:text="模式四" />
+                    android:text="背 光"
+                    android:textSize="8sp"
+                    tools:text="背 光" />
 
             </RelativeLayout>
         </RelativeLayout>

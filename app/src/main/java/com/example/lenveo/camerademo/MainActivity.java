@@ -79,6 +79,11 @@ public class MainActivity extends Activity{
             }
         });
 
+        final Button buttonmodel1 =  (Button) findViewById(R.id.button1);
+        final Button buttonmodel2 =  (Button) findViewById(R.id.button2);
+        final Button buttonmodel3 =  (Button) findViewById(R.id.button3);
+        final Button buttonmodel4 =  (Button) findViewById(R.id.button4);
+
 
     }
 

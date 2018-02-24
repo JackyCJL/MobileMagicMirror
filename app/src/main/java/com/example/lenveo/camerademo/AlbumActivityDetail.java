@@ -134,14 +134,14 @@ public class AlbumActivityDetail extends BaseActivity implements MatrixImageView
                             gridView.setAdapter(adapter);
                             //设置当前选中数量
                             if (checkedItems.size()+LocalImageHelper.getInstance().getCurrentSize() > 0) {
-                                finish.setText("完成(" + (checkedItems.size()+LocalImageHelper.getInstance().getCurrentSize()) + "/"+ PICTURE_MAX_NUMBER + ")");
+                                finish.setText("处理(" + (checkedItems.size()+LocalImageHelper.getInstance().getCurrentSize()) + "/"+ PICTURE_MAX_NUMBER + ")");
                                 finish.setEnabled(true);
-                                headerFinish.setText("完成(" + (checkedItems.size()+LocalImageHelper.getInstance().getCurrentSize()) + "/"+ PICTURE_MAX_NUMBER +")");
+                                headerFinish.setText("处理(" + (checkedItems.size()+LocalImageHelper.getInstance().getCurrentSize()) + "/"+ PICTURE_MAX_NUMBER +")");
                                 headerFinish.setEnabled(true);
                             } else {
-                                finish.setText("完成");
+                                finish.setText("处理");
 //                                finish.setEnabled(false);
-                                headerFinish.setText("完成");
+                                headerFinish.setText("处理");
 //                                headerFinish.setEnabled(false);
                             }
                         }
@@ -352,16 +352,16 @@ public class AlbumActivityDetail extends BaseActivity implements MatrixImageView
             }
         }
         if (checkedItems.size()+ LocalImageHelper.getInstance().getCurrentSize()> 0) {
-            //finish.setText("完成(" + (checkedItems.size()+LocalImageHelper.getInstance().getCurrentSize()) + "/"+PICTURE_MAX_NUMBER+")");
-            finish.setText("完成");
+            //finish.setText("处理(" + (checkedItems.size()+LocalImageHelper.getInstance().getCurrentSize()) + "/"+PICTURE_MAX_NUMBER+")");
+            finish.setText("处理");
             finish.setEnabled(true);
-            //headerFinish.setText("完成(" +(checkedItems.size()+LocalImageHelper.getInstance().getCurrentSize()) + "/"+PICTURE_MAX_NUMBER+")");
-            headerFinish.setText("完成");
+            //headerFinish.setText("处理(" +(checkedItems.size()+LocalImageHelper.getInstance().getCurrentSize()) + "/"+PICTURE_MAX_NUMBER+")");
+            headerFinish.setText("处理");
             headerFinish.setEnabled(true);
         } else {
-            finish.setText("完成");
+            finish.setText("处理");
             finish.setEnabled(false);
-            headerFinish.setText("完成");
+            headerFinish.setText("处理");
             headerFinish.setEnabled(false);
         }
     }
