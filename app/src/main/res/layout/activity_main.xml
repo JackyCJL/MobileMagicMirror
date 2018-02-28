@@ -148,7 +148,7 @@
                     android:layout_alignStart="@+id/button4"
                     android:gravity="left"
                     android:text="雾 霾"
-                    android:textSize="10sp"
+                    android:textSize="8sp"
                     tools:text="雾 霾" />
 
                 <Button
