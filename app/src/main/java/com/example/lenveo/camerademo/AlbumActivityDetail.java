@@ -8,6 +8,7 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.StrictMode;
@@ -30,8 +31,10 @@ import android.widget.Toast;
 
 import com.example.lenveo.camerademo.common.ExtraKey;
 import com.example.lenveo.camerademo.common.LocalImageHelper;
+import com.example.lenveo.camerademo.process.ImageProcessTool;
 import com.example.lenveo.camerademo.widget.AlbumViewPager;
 import com.example.lenveo.camerademo.widget.MatrixImageView;
+import com.example.lenveo.camerademo.common.ImageUtils;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.ImageSize;
@@ -45,6 +48,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.Socket;
 import java.util.List;
+
 
 /**
  * 欢迎页测试
@@ -259,7 +263,7 @@ public class AlbumActivityDetail extends BaseActivity implements MatrixImageView
         return data;
     }
 
-    public void handlePictrue() throws IOException {
+    public void handlePictureByServer() throws IOException {
         Socket s = new Socket(SERVER_ID, SERVER_PORT);
         DataOutputStream dos = new DataOutputStream(s.getOutputStream());
         byte[] msg = new byte[8 + 1 * MESSAGE_CHAR_NUMBER];
@@ -295,6 +299,32 @@ public class AlbumActivityDetail extends BaseActivity implements MatrixImageView
         System.out.println("over");
     }
 
+
+    public void handlePictureByLocal(){
+        Uri uri = Uri.parse(checkedItems.get(0).getOriginalUri());
+        File file = new File(getRealFilePath(this, uri));
+        ImageProcessTool mTool = new ImageProcessTool(ImageUtils.getBitmapByFile(file));
+
+        Bitmap result = null;
+        switch (ModelChoice){
+            case 0:
+                result = mTool.DehazeHeavy();
+                break;
+            case 1:
+                break;
+            case 2:
+                break;
+            case 3:
+                break;
+            case 4:
+                break;
+        }
+        ImageUtils.saveImageToGallery(AlbumActivityDetail.this, result);
+        Toast.makeText(AlbumActivityDetail.this,
+                "处理后的图像已存储至本地相册",
+                Toast.LENGTH_SHORT).show();
+        return;
+    }
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
@@ -513,8 +543,10 @@ public class AlbumActivityDetail extends BaseActivity implements MatrixImageView
                             //use StyleChoice and ModelChoice to do something
                             try {
                                 //System.out.print(checkedItems.get(0).getOriginalUri()+"\n");
-
-                                handlePictrue();
+                                if (StyleChoice == 0)
+                                    handlePictureByServer();
+                                else
+                                    handlePictureByLocal();
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }

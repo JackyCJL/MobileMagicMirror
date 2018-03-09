@@ -8,6 +8,7 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.LinearGradient;
 import android.graphics.Matrix;
 import android.graphics.Paint;
@@ -805,6 +806,113 @@ public class ImageUtils {
             }
         }
         return data;
+    }
+
+    public static int[] Bitmap2IntArrayRGB(Bitmap bmp){
+        int mBitmapWidth = bmp.getWidth();
+        int mBitmapHeight = bmp.getHeight();
+        int[] mArrayRGB = new int[mBitmapHeight * mBitmapWidth * 3];
+        for (int i = 0;i < mBitmapHeight; i++){
+            for (int j = 0;j < mBitmapWidth; j++){
+                int color = bmp.getPixel(j,i);
+                mArrayRGB[i * mBitmapWidth] = Color.red(color);
+                mArrayRGB[i * mBitmapWidth + 1] = Color.green(color);
+                mArrayRGB[i * mBitmapWidth + 2] = Color.blue(color);
+            }
+        }
+        return mArrayRGB;
+    }
+
+    // 将一个byte数转成int
+// 实现这个函数的目的是为了将byte数当成无符号的变量去转化成int
+    public static int convertByteToInt(int data){
+
+        int heightBit = (int) ((data>>4) & 0x0F);
+        int lowBit = (int) (0x0F & data);
+        return heightBit * 16 + lowBit;
+    }
+
+    public static int[] IntArrayRGB2Color(int[] data){
+        int size = data.length;
+        if (size == 0)
+            return null;
+
+        int arg = 0;
+        if (size % 3 != 0){
+            arg = 1;
+        }
+
+        // 一般情况下data数组的长度应该是3的倍数，这里做个兼容，多余的RGB数据用黑色0XFF000000填充
+        int []color = new int[size / 3 + arg];
+        int red, green, blue;
+
+        if (arg == 0){
+            for(int i = 0; i < color.length; ++i){
+                /*
+                red = convertByteToInt(data[i * 3]);
+                green = convertByteToInt(data[i * 3 + 1]);
+                blue = convertByteToInt(data[i * 3 + 2]);
+                */
+                red = data[i * 3];
+                green = data[i * 3 + 1];
+                blue = data[i * 3 + 2];
+                // 获取RGB分量值通过按位或生成int的像素值
+                color[i] = (red << 16) | (green << 8) | blue | 0xFF000000;
+            }
+        }else{
+            for(int i = 0; i < color.length - 1; ++i){
+                /*
+                red = convertByteToInt(data[i * 3]);
+                green = convertByteToInt(data[i * 3 + 1]);
+                blue = convertByteToInt(data[i * 3 + 2]);
+                */
+                red = data[i * 3];
+                green = data[i * 3 + 1];
+                blue = data[i * 3 + 2];
+                color[i] = (red << 16) | (green << 8) | blue | 0xFF000000;
+            }
+
+            color[color.length - 1] = 0xFF000000;
+        }
+        return color;
+    }
+
+    public static Bitmap IntArrayRGB2Bitmap(int[] data,int width, int height){
+        int[] colors = IntArrayRGB2Color(data);
+        if (colors == null)
+            return null;
+        Bitmap bmp = Bitmap.createBitmap(colors, 0, width, width, height, Bitmap.Config.ARGB_8888);
+        return bmp;
+    }
+
+    public static void saveImageToGallery(Context context, Bitmap bmp) {
+        // 首先保存图片
+        File appDir = new File(Environment.getExternalStorageDirectory(), "Boohee");
+        if (!appDir.exists()) {
+            appDir.mkdir();
+        }
+        String fileName = System.currentTimeMillis() + ".jpg";
+        File file = new File(appDir, fileName);
+        try {
+            FileOutputStream fos = new FileOutputStream(file);
+            bmp.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+            fos.flush();
+            fos.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        // 其次把文件插入到系统图库
+        try {
+            MediaStore.Images.Media.insertImage(context.getContentResolver(),
+                    file.getAbsolutePath(), fileName, null);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        // 最后通知图库更新
+        context.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.parse("file://" + file.getPath())));
     }
 }
 
