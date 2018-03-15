@@ -815,9 +815,10 @@ public class ImageUtils {
         for (int i = 0;i < mBitmapHeight; i++){
             for (int j = 0;j < mBitmapWidth; j++){
                 int color = bmp.getPixel(j,i);
-                mArrayRGB[i * mBitmapWidth] = Color.red(color);
-                mArrayRGB[i * mBitmapWidth + 1] = Color.green(color);
-                mArrayRGB[i * mBitmapWidth + 2] = Color.blue(color);
+                mArrayRGB[(i * mBitmapWidth + j) * 3] = Color.red(color);
+                mArrayRGB[(i * mBitmapWidth + j) * 3 + 1] = Color.green(color);
+                mArrayRGB[(i * mBitmapWidth + j) * 3 + 2] = Color.blue(color);
+
             }
         }
         return mArrayRGB;

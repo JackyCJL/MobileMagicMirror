@@ -15,6 +15,7 @@ import android.os.StrictMode;
 import android.provider.MediaStore;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,6 +43,7 @@ import com.nostra13.universalimageloader.core.display.SimpleBitmapDisplayer;
 import com.nostra13.universalimageloader.core.imageaware.ImageViewAware;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 
+import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -76,7 +78,7 @@ public class AlbumActivityDetail extends BaseActivity implements MatrixImageView
 
     static int PICTURE_MAX_NUMBER = 1;
     //static String SERVER_ID = "192.168.14.88";
-    static String SERVER_ID = "192.168.1.2";
+    static String SERVER_ID = "192.168.14.68";
     static int SERVER_PORT = 9210;
     static int MESSAGE_CHAR_NUMBER = 2000;
 
@@ -265,8 +267,7 @@ public class AlbumActivityDetail extends BaseActivity implements MatrixImageView
 
     public void handlePictureByServer() throws IOException {
         Socket s = new Socket(SERVER_ID, SERVER_PORT);
-        DataOutputStream dos = new DataOutputStream(s.getOutputStream());
-        byte[] msg = new byte[8 + 1 * MESSAGE_CHAR_NUMBER];
+
         FileInputStream fis = null;
         //System.out.println(checkedItems.get(0).getOriginalUri()+".jpg");
         Uri uri = Uri.parse(checkedItems.get(0).getOriginalUri());
@@ -274,9 +275,22 @@ public class AlbumActivityDetail extends BaseActivity implements MatrixImageView
         File file = new File(getRealFilePath(this, uri));
         fis = new FileInputStream(file);
         //System.out.print(checkedItems.get(0).getOriginalUri()+"\n");
+        DataOutputStream dos = new DataOutputStream(s.getOutputStream());
+        DataInputStream ins = new DataInputStream(s.getInputStream());
+        byte[] msg = new byte[8 + 1 * MESSAGE_CHAR_NUMBER];
+        byte[] msg_in = new byte[8 + 1 *MESSAGE_CHAR_NUMBER];
         int length = 0;
         int fin;
         int now;
+        /*
+        now = 1024 + (ModelChoice + 1);
+        for (int Ind = 0; Ind < 4; Ind++){
+            msg[Ind] = (byte)(now % 256);
+            now = now / 256;
+        }
+        dos.write(msg, 0, 8 + 1 * MESSAGE_CHAR_NUMBER);
+        dos.flush();
+        */
         while ((length = fis.read(msg, 4, 1024)) > 0){
             now = length;
             if (length >= 1024){
@@ -291,12 +305,34 @@ public class AlbumActivityDetail extends BaseActivity implements MatrixImageView
             msg[4 + 1 * MESSAGE_CHAR_NUMBER] = (byte)fin;
             dos.write(msg, 0, 8 + 1 * MESSAGE_CHAR_NUMBER);
             dos.flush();
-            System.out.println(length);
+            //System.out.println(length);
         }
+/*
+        now = 1025;
+        for (int Ind = 0; Ind < 4; Ind++){
+            msg[Ind] = (byte)(now % 256);
+            now = now / 256;
+        }
+        msg[4 + 1 * MESSAGE_CHAR_NUMBER] = (byte)1;
+        dos.write(msg, 0, 8 + 1 * MESSAGE_CHAR_NUMBER);
+        dos.flush();
+*/
         dos.close();
         fis.close();
+//        System.out.println("send picture over");
+
+
+
         s.close();
-        System.out.println("over");
+
+/*
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+
+            }
+        });
+*/
     }
 
 

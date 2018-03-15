@@ -1,6 +1,7 @@
 package com.example.lenveo.camerademo.process;
 
 import android.graphics.Bitmap;
+import android.util.Log;
 
 import com.example.lenveo.camerademo.common.ImageUtils;
 
@@ -205,6 +206,11 @@ public class ImageProcessTool {
 			*
 			*  Filter rows first
 			*/
+			    /* test
+			    System.out.print("channel:" + channel + "\n");
+			    System.out.print("COEF\n");
+			    System.out.print(coef.B + " " + coef.N + " " + coef.sigma + "\n");
+                */
                 for (row = 0; row < mHeight; row++)
                 {
                     pos = row * mWidth;
@@ -215,6 +221,7 @@ public class ImageProcessTool {
                     in[j] = out[j];
                     out[j] = 0;
                 }
+
 			/*
 			*  Filtering (smoothing) Gaussian recursive.
 			*
@@ -287,6 +294,7 @@ public class ImageProcessTool {
     public Bitmap DehazeHeavy(){
         rvals = new RetinexParams(240, 3, RETINEX_UNIFORM, 2.0f);
         int[] dst = ImageUtils.Bitmap2IntArrayRGB(srcbmp);
+        //Log.d("DehazeHeavy","dst length is " + dst.length);
         MSRCR(dst);
         Bitmap result = ImageUtils.IntArrayRGB2Bitmap(dst, mWidth, mHeight);
         return result;
